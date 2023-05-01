@@ -1,0 +1,132 @@
+---
+title: "FA-9 | APM1110"
+author: "LEIANA MARI D. AQUINO"
+date: "2023-05-01"
+output: html_notebook
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Exercises 18.1
+
+**1. An analogue signal received at a detector, measured in microvolts, is normally distributed with mean of 200 and variance of 256.**
+X follows normal distribution with mean of 200 microvolts and variance of 256 microvolts^2^
+
+Calculate the standard deviation, first:
+
+$$
+\sigma = \sqrt{\sigma^2} = \sqrt{256} = 16
+$$
+
+(a) What is the probability that the signal will exceed 224 𝜇V?
+
+$$
+P(X > 224) = P(Z > \frac{224 - 200}{16}) = P(Z > 1.50) = 0.0668
+$$ To calculate directly from *R*, write
+
+    {r, echo = FALSE}
+    prob <- 1 - pnorm(1.50)
+    round(prob, 4)
+
+This gives us:
+
+```{r, echo = FALSE}
+prob <- 1 - pnorm(1.50)
+round(prob, 4)
+```
+
+(b) What is the probability that it will be between 186 and 224 𝜇V?
+$$
+P(186 < X < 224) = P(\frac{186 - 200}{16} < Z < \frac{224 - 200}{16}) = P(-0.875 < Z < 1.50) = P(Z < 1.50) - P(Z < -0.875) = 0.7424
+$$
+
+To calculate directly from *R*, write
+
+    {r, echo = FALSE}
+    prob <- pnorm(1.50) - pnorm(-0.875)
+    round(prob, 4)
+
+This gives us:
+
+```{r, echo = FALSE}
+prob <- pnorm(1.50) - pnorm(-0.875)
+round(prob, 4)
+```
+
+(c) What is the micro voltage below which 25% of the signals will be?
+
+```{r, echo = FALSE}
+qnorm(0.25, 200, 16)
+```
+
+(d) What is the probability that the signal will be less than 240 𝜇V, given that it is larger than 210 𝜇V?$$
+\frac{P(210 < X < 240)}{P(x>210)} = P(\frac{210 - 200}{16} < Z < \frac{240 - 200}{16}) = P(0.625 < Z < 2.5) = P(Z < 2.5) - P(Z < 0.625) = 0.9767
+$$
+
+To calculate directly from *R*, write
+
+    {r, echo = FALSE}
+    prob <- (pnorm(2.5) - pnorm(0.625))/ (1- pnorm(0.625))
+    round(prob, 4)
+
+This gives us:
+
+```{r, echo = FALSE}
+prob <- (pnorm(2.5) - pnorm(0.625))/ (1- pnorm(0.625))
+round(prob, 4)
+```
+
+(e) Estimate the interquartile range.
+
+The interquartile range is the difference between the first (Q1) and third quartiles (Q3). It can be mathematically represented as **IQR = Q3 - Q1** .
+
+The first quartile is obtained with `qnorm(0.25, 200, 256)`:
+
+```{r, echo = FALSE}
+Q1 <- qnorm(0.25, 200, 256)
+Q1
+```
+
+The thirdquartile is obtained with `qnorm(0.75, 200, 256)`:
+
+```{r, echo = FALSE}
+Q3 <- qnorm(0.75, 200, 256)
+Q3
+```
+
+Therefore, the range of the middle 50% of the data, that is, the interquartile range is (27.33, 372.67).
+
+(f) If we know that a received signal is greater that 200 𝜇V, what is the probability that is in fact greater than 220 𝜇V?
+
+$$
+P(X > 220 | X > 200) = \frac{P(X > 220)}{P(X>200)}=\frac{P(Z > (220 - 200)/16)}{P(Z > (200 - 200)/16)} =\frac{P(Z > 1.25)}{P(Z > 0)} = 0.2113
+$$
+
+To calculate directly from *R*, write
+
+    {r, echo = FALSE}
+    prob <- (1 - pnorm(220, 200, 16))/(1-pnorm(200, 200, 16))
+    round(prob, 4)
+
+This gives us:
+
+```{r, echo = FALSE}
+prob <- (1 - pnorm(220, 200, 16))/(1-pnorm(200, 200, 16))
+round(prob, 4)
+```
+
+**2. A manufacturer of a particular type of computer system is interested in improving its customer support services. As a first step, its marketing department has been charged with the responsibility of summarizing the extent of customer problems in terms of system failures. Over a period of six months, customers were surveyed and the amount of downtime (in minutes) due to system failures they had experienced during the previous month was collected. The average downtime was found to be 25 minutes and a variance of 144. If it can be assumed that downtime is normally distributed:**
+
+Calculate the standard deviation, first:
+
+$$
+\sigma = \sqrt{\sigma^2} = \sqrt{144} = 12
+$$
+
+The Z-score for 95% is 1.960, while 10% = -1.282.
+
+(a) obtain bounds which will include 95% of the downtime of all the customers: **[1.48, 48.52]**
+(b) obtain the bound above which 10% of the downtime is included. **[-40.384, 9.616]**
